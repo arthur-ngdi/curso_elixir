@@ -19,19 +19,22 @@ defmodule Guess do
   def play(picked_number) do
     IO.gets("I have my number already. Tell me your guess, buddy: ")
     |> parse_input()
-    |> guess(picked_number, 1)
+    |> guess(picked_number, 1, [])
+
   end
 
-  def guess(user_input, picked_number, cont) when user_input > picked_number do
+  def guess(user_input, picked_number, cont, list) when user_input > picked_number do
+    add_user_input(picked_number, cont, list)
     IO.gets("This number is too high. Try a lower one: ")
     |> parse_input()
-    |> guess(picked_number, cont + 1)
+    |> guess(picked_number, cont + 1, list)
   end
 
-  def guess(user_input, picked_number, cont) when user_input < picked_number do
+  def guess(user_input, picked_number, cont, list) when user_input < picked_number do
+    add_user_input(picked_number, cont, list)
     IO.gets("This number is too low. Try a bigger one: ")
     |> parse_input()
-    |> guess(picked_number, cont + 1)
+    |> guess(picked_number, cont + 1, list)
   end
 
   def guess(_user_input, _picked_number, cont) do
@@ -51,6 +54,22 @@ defmodule Guess do
         Enum.member?(range, guesses)
       end)
     IO.puts(msg)
+  end
+
+  def add_user_input(input, cont, list) when cont > 1 do
+    list ++ input
+    |>verify_number(input)
+  end
+
+  def add_user_input(input, _cont, list) do
+    list ++ input
+  end
+
+  def verify_number(list, user_input) do
+    Enum.find(list, fn(s) -> s == user_input
+      #IO.puts("Number already tried")
+      #Enum.uniq(list)
+    end)
   end
 
   def pickup_number(level) do
