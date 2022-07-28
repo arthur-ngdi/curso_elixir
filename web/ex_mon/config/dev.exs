@@ -3,7 +3,7 @@ import Config
 # Configure your database
 config :ex_mon, ExMon.Repo,
   username: "postgres",
-  password: "postgres",
+  password: "12345678",
   hostname: "localhost",
   database: "ex_mon_dev",
   stacktrace: true,
